@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Platform, Linking } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform, Linking, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useApp } from '@/context/AppContext';
@@ -133,6 +133,10 @@ function LandingWebScreen({ router }: { router: any }) {
 function DashboardMobileScreen({ router }: { router: any }) {
   const { childName, addMoodLog, detectivePoints, completedScenarios } = useApp();
   const [selectedMoodId, setSelectedMoodId] = useState<string | undefined>(undefined);
+  const { width } = useWindowDimensions();
+
+  // Splits columns if width > 768 on mobile tablets/orientation changes
+  const isTablet = width > 768;
 
   const handleSelectMood = (moodId: string) => {
     setSelectedMoodId(moodId);
@@ -156,61 +160,112 @@ function DashboardMobileScreen({ router }: { router: any }) {
 
   return (
     <SafeAreaView style={dashboardStyles.safeArea}>
-      <ScrollView contentContainerStyle={dashboardStyles.scrollContent} showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={isTablet ? dashboardStyles.desktopScrollContent : dashboardStyles.mobileScrollContent} showsVerticalScrollIndicator={false}>
         {/* Welcome Section */}
         <View style={dashboardStyles.header}>
           <Text style={dashboardStyles.welcomeText}>Hey, {childName}! 👋</Text>
           <Text style={dashboardStyles.subWelcomeText}>Welcome to your Mood Buddy dashboard!</Text>
         </View>
 
-        {/* Emotion Check-in */}
-        <Card color={Colors.white} style={dashboardStyles.checkInCard}>
-          <MoodSelector onSelectMood={handleSelectMood} selectedMoodId={selectedMoodId} />
-          
-          {selectedMoodId && (
-            <Card color={Colors.moods[selectedMoodId as keyof typeof Colors.moods].color} style={dashboardStyles.feedbackCard}>
-              <Text style={dashboardStyles.feedbackText}>{getEncouragementText()}</Text>
-              <View style={dashboardStyles.feedbackActions}>
-                {['angry', 'sad', 'scared'].includes(selectedMoodId) ? (
-                  <Button 
-                    title="Go to Calming Corner ➔" 
-                    onPress={() => router.push('/coping')} 
-                    color={Colors.white} 
-                  />
-                ) : (
-                  <Button 
-                    title="Play Story Game ➔" 
-                    onPress={() => router.push('/detective')} 
-                    color={Colors.white} 
-                  />
+        {isTablet ? (
+          /* Tablet Split Layout */
+          <View style={dashboardStyles.desktopGrid}>
+            <View style={dashboardStyles.desktopColLeft}>
+              <Card color={Colors.white} style={dashboardStyles.checkInCard}>
+                <MoodSelector onSelectMood={handleSelectMood} selectedMoodId={selectedMoodId} />
+                {selectedMoodId && (
+                  <Card color={Colors.moods[selectedMoodId as keyof typeof Colors.moods].color} style={dashboardStyles.feedbackCard}>
+                    <Text style={dashboardStyles.feedbackText}>{getEncouragementText()}</Text>
+                    <View style={dashboardStyles.feedbackActions}>
+                      {['angry', 'sad', 'scared'].includes(selectedMoodId) ? (
+                        <Button 
+                          title="Go to Calming Corner ➔" 
+                          onPress={() => router.push('/coping')} 
+                          color={Colors.white} 
+                        />
+                      ) : (
+                        <Button 
+                          title="Play Story Game ➔" 
+                          onPress={() => router.push('/detective')} 
+                          color={Colors.white} 
+                        />
+                      )}
+                    </View>
+                  </Card>
                 )}
+              </Card>
+            </View>
+
+            <View style={dashboardStyles.desktopColRight}>
+              <View style={dashboardStyles.statsRow}>
+                <Card color={Colors.moods.happy.color} style={dashboardStyles.statCard}>
+                  <Text style={dashboardStyles.statEmoji}>★</Text>
+                  <Text style={dashboardStyles.statValue}>{detectivePoints} pts</Text>
+                  <Text style={dashboardStyles.statLabel}>Detective Score</Text>
+                </Card>
+                <Card color={Colors.moods.calm.color} style={dashboardStyles.statCard}>
+                  <Text style={dashboardStyles.statEmoji}>🧩</Text>
+                  <Text style={dashboardStyles.statValue}>{completedScenarios.length} / 6</Text>
+                  <Text style={dashboardStyles.statLabel}>Cases Solved</Text>
+                </Card>
               </View>
+
+              <Card color={Colors.primary} style={dashboardStyles.tipCard}>
+                <Text style={dashboardStyles.tipTitle}>💡 Mood Tip of the Day</Text>
+                <Text style={dashboardStyles.tipText}>
+                  When a feeling gets too big, it is like a cloud. It will pass! Try taking 3 balloon breaths to let it float away.
+                </Text>
+              </Card>
+            </View>
+          </View>
+        ) : (
+          /* Mobile Stack */
+          <View style={dashboardStyles.mobileStack}>
+            <Card color={Colors.white} style={dashboardStyles.checkInCard}>
+              <MoodSelector onSelectMood={handleSelectMood} selectedMoodId={selectedMoodId} />
+              {selectedMoodId && (
+                <Card color={Colors.moods[selectedMoodId as keyof typeof Colors.moods].color} style={dashboardStyles.feedbackCard}>
+                  <Text style={dashboardStyles.feedbackText}>{getEncouragementText()}</Text>
+                  <View style={dashboardStyles.feedbackActions}>
+                    {['angry', 'sad', 'scared'].includes(selectedMoodId) ? (
+                      <Button 
+                        title="Go to Calming Corner ➔" 
+                        onPress={() => router.push('/coping')} 
+                        color={Colors.white} 
+                      />
+                    ) : (
+                      <Button 
+                        title="Play Story Game ➔" 
+                        onPress={() => router.push('/detective')} 
+                        color={Colors.white} 
+                      />
+                    )}
+                  </View>
+                </Card>
+              )}
             </Card>
-          )}
-        </Card>
 
-        {/* Badges and Points Summary */}
-        <View style={dashboardStyles.statsRow}>
-          <Card color={Colors.moods.happy.color} style={dashboardStyles.statCard}>
-            <Text style={dashboardStyles.statEmoji}>★</Text>
-            <Text style={dashboardStyles.statValue}>{detectivePoints} pts</Text>
-            <Text style={dashboardStyles.statLabel}>Detective Score</Text>
-          </Card>
-          
-          <Card color={Colors.moods.calm.color} style={dashboardStyles.statCard}>
-            <Text style={dashboardStyles.statEmoji}>🧩</Text>
-            <Text style={dashboardStyles.statValue}>{completedScenarios.length} / 6</Text>
-            <Text style={dashboardStyles.statLabel}>Cases Solved</Text>
-          </Card>
-        </View>
+            <View style={dashboardStyles.statsRow}>
+              <Card color={Colors.moods.happy.color} style={dashboardStyles.statCard}>
+                <Text style={dashboardStyles.statEmoji}>★</Text>
+                <Text style={dashboardStyles.statValue}>{detectivePoints} pts</Text>
+                <Text style={dashboardStyles.statLabel}>Detective Score</Text>
+              </Card>
+              <Card color={Colors.moods.calm.color} style={dashboardStyles.statCard}>
+                <Text style={dashboardStyles.statEmoji}>🧩</Text>
+                <Text style={dashboardStyles.statValue}>{completedScenarios.length} / 6</Text>
+                <Text style={dashboardStyles.statLabel}>Cases Solved</Text>
+              </Card>
+            </View>
 
-        {/* Daily Tip */}
-        <Card color={Colors.primary} style={dashboardStyles.tipCard}>
-          <Text style={dashboardStyles.tipTitle}>💡 Mood Tip of the Day</Text>
-          <Text style={dashboardStyles.tipText}>
-            When a feeling gets too big, it is like a cloud. It will pass! Try taking 3 balloon breaths to let it float away.
-          </Text>
-        </Card>
+            <Card color={Colors.primary} style={dashboardStyles.tipCard}>
+              <Text style={dashboardStyles.tipTitle}>💡 Mood Tip of the Day</Text>
+              <Text style={dashboardStyles.tipText}>
+                When a feeling gets too big, it is like a cloud. It will pass! Try taking 3 balloon breaths to let it float away.
+              </Text>
+            </Card>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -380,14 +435,21 @@ const dashboardStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  scrollContent: {
+  mobileScrollContent: {
     padding: 20,
     gap: 16,
-    // Better padding at the bottom for mobile so contents are never cut off by bottom tabs (UI/UX fix)
     paddingBottom: 140,
     alignSelf: 'center',
     width: '100%',
     maxWidth: 600,
+  },
+  desktopScrollContent: {
+    padding: 30,
+    gap: 20,
+    paddingBottom: 120,
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: 1000,
   },
   header: {
     marginTop: 10,
@@ -404,12 +466,28 @@ const dashboardStyles = StyleSheet.create({
     fontWeight: '600',
     marginTop: 4,
   },
+  desktopGrid: {
+    flexDirection: 'row',
+    gap: 24,
+    width: '100%',
+    alignItems: 'flex-start',
+  },
+  desktopColLeft: {
+    flex: 1.3,
+  },
+  desktopColRight: {
+    flex: 1,
+    gap: 16,
+  },
+  mobileStack: {
+    gap: 16,
+  },
   checkInCard: {
-    padding: 16,
+    padding: 20,
   },
   feedbackCard: {
     marginTop: 16,
-    padding: 14,
+    padding: 16,
     borderStyle: 'dashed',
   },
   feedbackText: {
@@ -431,15 +509,15 @@ const dashboardStyles = StyleSheet.create({
   statCard: {
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: 20,
     marginVertical: 0,
   },
   statEmoji: {
-    fontSize: 32,
+    fontSize: 36,
     marginBottom: 4,
   },
   statValue: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '900',
     color: Colors.text,
   },
@@ -450,7 +528,7 @@ const dashboardStyles = StyleSheet.create({
     marginTop: 2,
   },
   tipCard: {
-    padding: 18,
+    padding: 20,
   },
   tipTitle: {
     fontSize: 18,

@@ -27,14 +27,16 @@ export const Button: React.FC<ButtonProps> = ({
     <Pressable
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [
+      // Incorporating Web hover support in styling function for premium feel
+      style={({ hovered, pressed }: any) => [
         styles.buttonContainer,
         {
           backgroundColor: color,
           borderColor: borderColor,
         },
         disabled && styles.disabled,
-        !pressed && !disabled && styles.shadow,
+        !hovered && !pressed && !disabled && styles.shadow,
+        hovered && !pressed && !disabled && styles.hovered,
         pressed && !disabled && styles.pressed,
         style,
       ]}
@@ -61,15 +63,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     minWidth: 120,
-  },
+    transitionProperty: 'transform, shadow-offset',
+    transitionDuration: '0.15s',
+  } as any,
   shadow: {
     shadowColor: Colors.shadow,
     shadowOffset: { width: 4, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 0,
   },
+  hovered: {
+    transform: [{ translateX: -2 }, { translateY: -2 }],
+    shadowOffset: { width: 6, height: 6 },
+  },
   pressed: {
-    transform: [{ translateX: 3 }, { translateY: 3 }],
+    transform: [{ translateX: 2 }, { translateY: 2 }],
     shadowOffset: { width: 1, height: 1 },
   },
   disabled: {

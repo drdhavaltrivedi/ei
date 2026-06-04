@@ -30,14 +30,11 @@ export const Card: React.FC<CardProps> = ({
     return (
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => [
+        // Incorporating 'hovered' state for physical web micro-animations (GTM premium feel)
+        style={({ hovered, pressed }: any) => [
           cardStyle,
-          pressed && {
-            transform: [{ translateX: noShadow ? 0 : 2 }, { translateY: noShadow ? 0 : 2 }],
-          },
-          pressed && !noShadow && {
-            shadowOffset: { width: 2, height: 2 },
-          },
+          hovered && !pressed && !noShadow && styles.hovered,
+          pressed && !noShadow && styles.pressed,
         ]}
       >
         <View style={styles.content}>{children}</View>
@@ -55,14 +52,23 @@ const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 8,
     width: '100%',
-  },
+    transitionProperty: 'transform, shadow-offset',
+    transitionDuration: '0.15s',
+  } as any, // Cast as any because transitionProperty is web-only React Native style
   shadow: {
     shadowColor: Colors.shadow,
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 1,
     shadowRadius: 0,
-    // For Android elevation mimicking flat shadow (mostly we rely on flat shadows or borders)
     elevation: 0, 
+  },
+  hovered: {
+    transform: [{ translateX: -2 }, { translateY: -2 }],
+    shadowOffset: { width: 7, height: 7 },
+  },
+  pressed: {
+    transform: [{ translateX: 3 }, { translateY: 3 }],
+    shadowOffset: { width: 2, height: 2 },
   },
   content: {
     width: '100%',
