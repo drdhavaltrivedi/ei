@@ -30,6 +30,9 @@ export default function AppTabs() {
           <TabTrigger name="parent" href={"/parent" as any} asChild>
             <TabButton>Parent Hub</TabButton>
           </TabTrigger>
+          <TabTrigger name="blog" href={"/blog" as any} asChild>
+            <TabButton>Blog</TabButton>
+          </TabTrigger>
         </CustomTabList>
       </TabList>
     </Tabs>
