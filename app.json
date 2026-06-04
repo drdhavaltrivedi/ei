@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MoodBuddy",
-    "slug": "moodbuddy",
+    "slug": "ei",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -47,6 +47,7 @@
       "eas": {
         "projectId": "92b6f6fe-a664-4b6d-be64-df05e811b3a9"
       }
-    }
+    },
+    "owner": "dhaval29"
   }
 }

@@ -89,6 +89,7 @@ export default function BlogListScreen() {
               color={Colors.white}
               onPress={() => router.push(`/blog/${blog.id}` as any)}
               style={styles.blogCard}
+              contentStyle={styles.blogCardContent}
             >
               <View style={[styles.colorTab, { backgroundColor: blog.color }]} />
               <View style={styles.cardInfo}>
@@ -155,11 +156,13 @@ const styles = StyleSheet.create({
   blogCard: {
     padding: 0,
     overflow: 'hidden',
+  },
+  blogCardContent: {
     flexDirection: 'row',
   },
   colorTab: {
     width: 14,
-    height: '100%',
+    alignSelf: 'stretch',
     borderRightWidth: 3,
     borderColor: Colors.border,
   },

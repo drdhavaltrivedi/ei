@@ -22,19 +22,28 @@ export default function LandingPage() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Navigation Bar */}
         <View style={styles.navBar}>
-          <Text style={styles.logoText}>MoodBuddy 🧸</Text>
-          <Button
-            title="Launch Web App"
-            onPress={handleOpenApp}
-            color={Colors.moods.calm.color}
-            style={styles.navBtn}
-            textStyle={styles.navBtnText}
-          />
+          <Text style={styles.logoText}>MoodBuddy</Text>
+          <View style={styles.navLinksContainer}>
+            <Button
+              title="Parenting Blog"
+              onPress={() => router.push('/blog' as any)}
+              color={Colors.moods.happy.color}
+              style={styles.navBtn}
+              textStyle={styles.navBtnText}
+            />
+            <Button
+              title="Launch Web App"
+              onPress={handleOpenApp}
+              color={Colors.moods.calm.color}
+              style={styles.navBtn}
+              textStyle={styles.navBtnText}
+            />
+          </View>
         </View>
 
         {/* Hero Section */}
         <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>Help Your Child Navigate Big Feelings! 🌋🧘‍♀️</Text>
+          <Text style={styles.heroTitle}>Help Your Child Navigate Big Feelings!</Text>
           <Text style={styles.heroSub}>
             MoodBuddy is a playful, co-regulation companion that teaches children ages 4-10 how to understand and manage anger, fear, and sadness through interactive play.
           </Text>
@@ -52,7 +61,7 @@ export default function LandingPage() {
         {/* Visual Mockup Cards (Neo-brutalist) */}
         <View style={styles.featuresGrid}>
           <Card color={Colors.moods.happy.color} style={styles.featureCard}>
-            <Text style={styles.featureEmoji}>🕵️‍♂️ Case Solver</Text>
+            <Text style={styles.featureEmoji}>Case Solver</Text>
             <Text style={styles.featureTitle}>Emotion Detective</Text>
             <Text style={styles.featureText}>
               Interactive story cases that present real-world playground challenges. Children make choices and learn positive coping outcomes.
@@ -60,7 +69,7 @@ export default function LandingPage() {
           </Card>
 
           <Card color={Colors.moods.calm.color} style={styles.featureCard}>
-            <Text style={styles.featureEmoji}>🎈 Deep Breathing</Text>
+            <Text style={styles.featureEmoji}>Deep Breathing</Text>
             <Text style={styles.featureTitle}>The Calming Balloon</Text>
             <Text style={styles.featureText}>
               Guides kids through slow breathing cycles (Inhale, Hold, Exhale) using expanding animations to cool down the nervous system.
@@ -68,7 +77,7 @@ export default function LandingPage() {
           </Card>
 
           <Card color={Colors.moods.angry.color} style={styles.featureCard}>
-            <Text style={styles.featureEmoji}>🌋 Safe Outlets</Text>
+            <Text style={styles.featureEmoji}>Safe Outlets</Text>
             <Text style={styles.featureTitle}>Anger Volcano</Text>
             <Text style={styles.featureText}>
               Validates the high physical energy of anger. Children tap the volcano to release steam, cooling it down into a green flower garden.
@@ -82,13 +91,13 @@ export default function LandingPage() {
           <Text style={styles.downloadSub}>Take MoodBuddy with you on tablets and phones for offline play!</Text>
           <View style={styles.badgeRow}>
             <Button
-              title="🍎 App Store (iOS)"
+              title="App Store (iOS)"
               onPress={() => Linking.openURL('https://apps.apple.com')}
               color={Colors.white}
               style={styles.badgeBtn}
             />
             <Button
-              title="🤖 Play Store (Android)"
+              title="Play Store (Android)"
               onPress={() => Linking.openURL('https://play.google.com')}
               color={Colors.white}
               style={styles.badgeBtn}
@@ -103,6 +112,12 @@ export default function LandingPage() {
           <Text style={styles.parentText}>
             MoodBuddy isn't just a distraction tool. It is built around co-regulation principles. Our Parent Hub provides science-backed articles and logs to help adults partner with kids during moments of high emotional distress.
           </Text>
+          <Button
+            title="Read Our Parenting Guides & Blog"
+            onPress={() => router.push('/blog' as any)}
+            color={Colors.white}
+            style={styles.parentBlogBtn}
+          />
         </Card>
 
         {/* Footer */}
@@ -110,6 +125,7 @@ export default function LandingPage() {
           <Text style={styles.footerText}>© 2026 MoodBuddy. All rights reserved.</Text>
           <View style={styles.footerLinks}>
             <Text style={styles.footerLink} onPress={handleOpenPrivacy}>Privacy Policy (COPPA Compliant)</Text>
+            <Text style={styles.footerLink} onPress={() => router.push('/blog' as any)}>Parenting Blog</Text>
             <Text style={styles.footerLink} onPress={handleOpenApp}>Dashboard</Text>
           </View>
         </View>
@@ -138,6 +154,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: Colors.border,
     marginBottom: 8,
+  },
+  navLinksContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'center',
   },
   logoText: {
     fontSize: 22,
@@ -250,6 +271,10 @@ const styles = StyleSheet.create({
     color: Colors.text,
     fontWeight: '600',
     lineHeight: 22,
+  },
+  parentBlogBtn: {
+    marginTop: 14,
+    alignSelf: 'flex-start',
   },
   footer: {
     borderTopWidth: 3,

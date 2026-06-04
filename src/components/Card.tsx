@@ -9,6 +9,7 @@ interface CardProps {
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   noShadow?: boolean;
+  contentStyle?: StyleProp<ViewStyle>;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -18,6 +19,7 @@ export const Card: React.FC<CardProps> = ({
   style,
   onPress,
   noShadow = false,
+  contentStyle,
 }) => {
   const cardStyle = [
     styles.card,
@@ -37,7 +39,7 @@ export const Card: React.FC<CardProps> = ({
           pressed && !noShadow && styles.pressed,
         ]}
       >
-        <View style={styles.content}>{children}</View>
+        <View style={[styles.content, contentStyle]}>{children}</View>
       </Pressable>
     );
   }
