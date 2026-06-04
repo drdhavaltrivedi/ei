@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Platform, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, Link } from 'expo-router';
 import Head from 'expo-router/head';
 import { Colors } from '@/constants/Colors';
 import { Card } from '@/components/Card';
@@ -84,25 +84,25 @@ export default function BlogListScreen() {
         {/* Blog Post List */}
         <View style={styles.list}>
           {blogs.map((blog) => (
-            <Card
-              key={blog.id}
-              color={Colors.white}
-              onPress={() => router.push(`/blog/${blog.id}` as any)}
-              style={styles.blogCard}
-              contentStyle={styles.blogCardContent}
-            >
-              <View style={[styles.colorTab, { backgroundColor: blog.color }]} />
-              <View style={styles.cardInfo}>
-                <View style={styles.metaRow}>
-                  <Text style={styles.metaText}>{blog.date}</Text>
-                  <Text style={styles.metaText}>•</Text>
-                  <Text style={styles.metaText}>{blog.readTime}</Text>
+            <Link href={`/blog/${blog.id}` as any} asChild key={blog.id}>
+              <Card
+                color={Colors.white}
+                style={styles.blogCard}
+                contentStyle={styles.blogCardContent}
+              >
+                <View style={[styles.colorTab, { backgroundColor: blog.color }]} />
+                <View style={styles.cardInfo}>
+                  <View style={styles.metaRow}>
+                    <Text style={styles.metaText}>{blog.date}</Text>
+                    <Text style={styles.metaText}>•</Text>
+                    <Text style={styles.metaText}>{blog.readTime}</Text>
+                  </View>
+                  <Text style={styles.blogTitle}>{blog.title}</Text>
+                  <Text style={styles.blogExcerpt}>{blog.excerpt}</Text>
+                  <Text style={styles.readMore}>Read Article ➔</Text>
                 </View>
-                <Text style={styles.blogTitle}>{blog.title}</Text>
-                <Text style={styles.blogExcerpt}>{blog.excerpt}</Text>
-                <Text style={styles.readMore}>Read Article ➔</Text>
-              </View>
-            </Card>
+              </Card>
+            </Link>
           ))}
         </View>
 

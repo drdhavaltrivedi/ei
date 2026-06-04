@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, Platform, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, Link } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { Card } from '@/components/Card';
 import { Button } from '@/components/Button';
@@ -24,13 +24,15 @@ export default function LandingPage() {
         <View style={styles.navBar}>
           <Text style={styles.logoText}>MoodBuddy</Text>
           <View style={styles.navLinksContainer}>
-            <Button
-              title="Parenting Blog"
-              onPress={() => router.push('/blog' as any)}
-              color={Colors.moods.happy.color}
-              style={styles.navBtn}
-              textStyle={styles.navBtnText}
-            />
+            <Link href={'/blog' as any} asChild>
+              <Button
+                title="Parenting Blog"
+                onPress={() => {}}
+                color={Colors.moods.happy.color}
+                style={styles.navBtn}
+                textStyle={styles.navBtnText}
+              />
+            </Link>
             <Button
               title="Launch Web App"
               onPress={handleOpenApp}
@@ -112,12 +114,14 @@ export default function LandingPage() {
           <Text style={styles.parentText}>
             MoodBuddy isn't just a distraction tool. It is built around co-regulation principles. Our Parent Hub provides science-backed articles and logs to help adults partner with kids during moments of high emotional distress.
           </Text>
-          <Button
-            title="Read Our Parenting Guides & Blog"
-            onPress={() => router.push('/blog' as any)}
-            color={Colors.white}
-            style={styles.parentBlogBtn}
-          />
+          <Link href={'/blog' as any} asChild>
+            <Button
+              title="Read Our Parenting Guides & Blog"
+              onPress={() => {}}
+              color={Colors.white}
+              style={styles.parentBlogBtn}
+            />
+          </Link>
         </Card>
 
         {/* Footer */}
@@ -125,7 +129,9 @@ export default function LandingPage() {
           <Text style={styles.footerText}>© 2026 MoodBuddy. All rights reserved.</Text>
           <View style={styles.footerLinks}>
             <Text style={styles.footerLink} onPress={handleOpenPrivacy}>Privacy Policy (COPPA Compliant)</Text>
-            <Text style={styles.footerLink} onPress={() => router.push('/blog' as any)}>Parenting Blog</Text>
+            <Link href={'/blog' as any} asChild>
+              <Text style={styles.footerLink}>Parenting Blog</Text>
+            </Link>
             <Text style={styles.footerLink} onPress={handleOpenApp}>Dashboard</Text>
           </View>
         </View>

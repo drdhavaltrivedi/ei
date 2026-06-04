@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { useRouter, Link } from 'expo-router';
 import { useApp } from '@/context/AppContext';
 import { Colors } from '@/constants/Colors';
 import { Card } from '@/components/Card';
@@ -104,26 +104,32 @@ export default function ParentScreen() {
             Read simple strategies to help kids manage big feelings.
           </Text>
 
-          <Card color="#E0F2FE" style={styles.articleCard} noShadow onPress={() => router.push('/blog/co-regulation-tantrums' as any)}>
-            <Text style={styles.articleTitle}>🔑 Co-Regulation is Key (Read Full Guide ➔)</Text>
-            <Text style={styles.articleText}>
-              Children do not yet have the brain structures to calm down by themselves. They need a calm adult to mirror. When they are hot (angry), try to keep your voice low and slow. Your nervous system will help cool down theirs.
-            </Text>
-          </Card>
+          <Link href={'/blog/co-regulation-tantrums' as any} asChild>
+            <Card color="#E0F2FE" style={styles.articleCard} noShadow>
+              <Text style={styles.articleTitle}>🔑 Co-Regulation is Key (Read Full Guide ➔)</Text>
+              <Text style={styles.articleText}>
+                Children do not yet have the brain structures to calm down by themselves. They need a calm adult to mirror. When they are hot (angry), try to keep your voice low and slow. Your nervous system will help cool down theirs.
+              </Text>
+            </Card>
+          </Link>
 
-          <Card color="#FEF3C7" style={styles.articleCard} noShadow onPress={() => router.push('/blog/name-it-to-tame-it' as any)}>
-            <Text style={styles.articleTitle}>🏷️ Name it to Tame it (Read Full Guide ➔)</Text>
-            <Text style={styles.articleText}>
-              Naming emotions takes away their power. Saying, "I see you are feeling really angry that Lucas broke the tower," helps children feel understood and less overwhelmed by the physical sensation of the emotion.
-            </Text>
-          </Card>
+          <Link href={'/blog/name-it-to-tame-it' as any} asChild>
+            <Card color="#FEF3C7" style={styles.articleCard} noShadow>
+              <Text style={styles.articleTitle}>🏷️ Name it to Tame it (Read Full Guide ➔)</Text>
+              <Text style={styles.articleText}>
+                Naming emotions takes away their power. Saying, "I see you are feeling really angry that Lucas broke the tower," helps children feel understood and less overwhelmed by the physical sensation of the emotion.
+              </Text>
+            </Card>
+          </Link>
 
-          <Card color="#ECE9FC" style={styles.articleCard} noShadow onPress={() => router.push('/blog/safe-anger-outlets' as any)}>
-            <Text style={styles.articleTitle}>🌋 Controlled Releases Work (Read Full Guide ➔)</Text>
-            <Text style={styles.articleText}>
-              Anger creates physical energy in the body. Telling a kid to "just stop it" is difficult. The anger volcano game validates that energy and channels it safely through physical screen taps, letting the steam out constructively.
-            </Text>
-          </Card>
+          <Link href={'/blog/safe-anger-outlets' as any} asChild>
+            <Card color="#ECE9FC" style={styles.articleCard} noShadow>
+              <Text style={styles.articleTitle}>🌋 Controlled Releases Work (Read Full Guide ➔)</Text>
+              <Text style={styles.articleText}>
+                Anger creates physical energy in the body. Telling a kid to "just stop it" is difficult. The anger volcano game validates that energy and channels it safely through physical screen taps, letting the steam out constructively.
+              </Text>
+            </Card>
+          </Link>
         </Card>
 
         {/* Danger Zone */}
