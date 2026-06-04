@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ei",
-    "slug": "ei",
+    "name": "MoodBuddy",
+    "slug": "moodbuddy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

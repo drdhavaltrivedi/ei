@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: 20,
     gap: 16,
-    paddingBottom: Platform.OS === 'web' ? 100 : 40,
+    paddingBottom: Platform.OS === 'web' ? 120 : 140,
     alignSelf: 'center',
     width: '100%',
     maxWidth: 600,
