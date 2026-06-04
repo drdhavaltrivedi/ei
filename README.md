@@ -158,13 +158,80 @@ To compile and build static distribution directories:
 ```bash
 npx expo export --platform web
 ```
-This outputs a fully optimized standalone compilation bundle under `dist/` ready to upload to hosting services like Netlify, Vercel, or AWS S3.
+This outputs a fully optimized standalone compilation bundle under `dist/` ready to upload to hosting services like Vercel, Netlify, or AWS S3.
+
+### 5. Deployment to Vercel (Web Platform)
+MoodBuddy is fully configured to compile as a static web app. You can deploy it to **Vercel** in two ways:
+
+#### Option A: Vercel CLI (Immediate Deploy)
+Install Vercel CLI and run inside the project root:
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Run build export
+npx expo export --platform web
+
+# Deploy the output dist directory
+vercel deploy dist --prod
+```
+
+#### Option B: GitHub Git Integration
+1. Push your code to your GitHub repository (see section below).
+2. Go to your [Vercel Dashboard](https://vercel.com) and click **Add New Project**.
+3. Select your linked `ei` repository.
+4. In the **Build and Development Settings** panel:
+   - **Framework Preset**: Other (or None)
+   - **Build Command**: `npx expo export --platform web`
+   - **Output Directory**: `dist`
+5. Click **Deploy**. Vercel will automatically build and publish your landing page, policy page, and dashboard on every commit!
+
+---
+
+## 📱 Mobile App Compilation (EAS Build for iOS & Android)
+
+MoodBuddy uses Expo Application Services (EAS) to compile native binary packages (`.apk`/`.aab` for Android, `.ipa` for iOS) in the cloud.
+
+### 1. Initialize EAS Project
+Log in to your Expo account in the terminal and initialize the configuration:
+```bash
+# Log in to Expo CLI
+npx eas login
+
+# Configure builds
+npx eas build:configure
+```
+This command auto-generates `eas.json` containing configuration profiles for development, preview (simulator/test flight), and production.
+
+### 2. Trigger Cloud Builds
+Run the commands below to compile packages on Expo servers:
+
+- **Build for Android (.apk/.aab)**:
+  ```bash
+  npx eas build --platform android --profile preview
+  ```
+- **Build for iOS (.ipa)**:
+  ```bash
+  npx eas build --platform ios --profile preview
+  ```
+- **Build for All Platforms Simultaneously**:
+  ```bash
+  npx eas build --platform all
+  ```
+
+---
+
+## 📄 Marketing & Policy Routes (Web Only)
+
+Apart from the interactive dashboard routes, MoodBuddy packages marketing structures out of the box:
+- **Landing Page** (`/landing`): Accessible via [src/app/landing.tsx](file:///home/brilworks/Desktop/dhaval/ei/src/app/landing.tsx), this serves as the GTM showcase explaining features, offering direct app store mock buttons, and outlining co-regulation statistics.
+- **Privacy Policy** (`/privacy`): Accessible via [src/app/privacy.tsx](file:///home/brilworks/Desktop/dhaval/ei/src/app/privacy.tsx), this displays a COPPA-compliant privacy standard confirming that zero kid telemetry data is collected externally and storage stays locally on the parent's device.
 
 ---
 
 ## 📦 How to Create GitHub Repo & Push Code
 
-Follow these commands to initialize a git repository locally, commit the changes, and deploy them to your GitHub account:
+Follow these commands to link and deploy this local codebase to your GitHub account:
 
 ### 1. Initialize Local Git
 Ensure you are in the project folder and run:
@@ -179,13 +246,7 @@ git add .
 git commit -m "feat: initial commit of GTM-ready MoodBuddy app"
 ```
 
-### 3. Create a Remote Repository on GitHub
-1. Log in to your account at [GitHub](https://github.com/).
-2. Click the **New** button to create a new repository.
-3. Name it (e.g. `moodbuddy`) and keep it Public or Private. Do not check "Add a README", "Add .gitignore", or "Choose a license" (as they are already configured in this project).
-4. Click **Create repository**.
-
-### 4. Link & Push Your Local Repo
+### 3. Link & Push Your Local Repo
 Copy the Git URL from your new GitHub repository page, and run the following command in your terminal (replacing `YOUR_GITHUB_USERNAME` and `YOUR_REPO_NAME`):
 ```bash
 # Rename the default branch to main
@@ -198,3 +259,4 @@ git remote add origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git
 git push -u origin main
 ```
 Once executed, all code and generated graphics assets will be uploaded and accessible online!
+
